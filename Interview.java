@@ -14,7 +14,7 @@ public class Interview {
 		Reader InputStream = new FileReader(args[0]);
 
 		/*Create a trie to store the words*/
-		PrefixTree<Character> inputFileTree = new PrefixTree<Character>();
+		PrefixTree inputFileTree = new PrefixTree();
 
 		/*Feed the characters in one at a time*/
 		int characterCode;
@@ -40,7 +40,7 @@ public class Interview {
 
 		/*Spit out the answer*/
 		for(int i = 0; i < outputSize; i++){
-			//System.out.println(wordArray[i].word);
+			System.out.println(wordArray[i].word);
 			//System.out.println(i);
 		}
 	}
