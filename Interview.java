@@ -17,17 +17,19 @@ public class Interview {
 		PrefixTree<Character> inputFileTree = new PrefixTree<Character>();
 
 		/*Feed the characters in one at a time*/
-		int currentCharacter;
+		int characterCode;
 		do{
 			try{
-				currentCharacter = InputStream.read();
-				inputFileTree.ProcessCharacter(currentCharacter);
+				characterCode = InputStream.read();
 			}
 			catch (IOException e){
 				e.printStackTrace();
 				return;
 			}
-		} while(currentCharacter != -1);
+			Character currentCharacter = new Character((char)characterCode);
+			//System.out.println(currentCharacter.charValue());
+			inputFileTree.ProcessCharacter(currentCharacter);
+		} while(characterCode != -1);
 
 
 		StringNode[] wordArray = inputFileTree.ReturnArrayOfWords();
@@ -38,7 +40,8 @@ public class Interview {
 
 		/*Spit out the answer*/
 		for(int i = 0; i < outputSize; i++){
-			System.out.println(wordArray[i].word);
+			//System.out.println(wordArray[i].word);
+			//System.out.println(i);
 		}
 	}
 }

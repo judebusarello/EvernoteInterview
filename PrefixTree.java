@@ -10,17 +10,17 @@ public class PrefixTree<T> {
 	/*Constructor To Initialize Empty Tree*/
 	public PrefixTree(){
 		root = new CharacterNode<T>();
-		root.characterValue = ' ';
-		root.count = 0; 
+		root.nodeValue = new Character(' ');
+		root.count = 0;
 		root.parent = null;
-		root.children = new HashMap<Integer,CharacterNode<T>>();
+		root.children = new HashMap<Character, CharacterNode<T>>();
 		currentCharNode = root;
 		totalWordsInTree = 0;
 	}
 
 	/*Method For Adding a New Character to the Prefix Tree*/
-	public void ProcessCharacter(int currentChar){
-		if(currentChar == -1 || (char)currentChar == ' '){
+	public void ProcessCharacter(Character currentChar){
+		if(Character.isISOControl(currentChar) || Character.isWhitespace(currentChar)){
 			//we've reached a delimeter. increment increment the count and start again.
 			currentCharNode.count++;
 			currentCharNode = root;
@@ -28,21 +28,22 @@ public class PrefixTree<T> {
 		else if(currentCharNode.children.get(currentChar) != null){
 			//the node already exists
 			currentCharNode = currentCharNode.children.get(currentChar);
-		} 
+		}
 		else{
 			//make a new node
 			CharacterNode<T> newNode = new CharacterNode<T>();
-			newNode.characterValue = currentChar;
+			newNode.nodeValue = currentChar.charValue();
 			newNode.count = 0;
 			newNode.parent = currentCharNode;
-			newNode.children = new HashMap<Integer,CharacterNode<T>>();
+			newNode.children = new HashMap<Character,CharacterNode<T>>();
 			//use hashmap and add the new node
-			currentCharNode.children.put(new Integer(currentChar), newNode);
+			currentCharNode.children.put(currentChar, newNode);
 			//update currentCharNode
 			currentCharNode = newNode;
 			//increment the total
 			totalWordsInTree++;
 		}
+		//System.out.println(currentChar.charValue());
 		return;
 	}
 
@@ -50,8 +51,8 @@ public class PrefixTree<T> {
 	public StringNode[] ReturnArrayOfWords(){
 		StringNode[] wordArray = new StringNode[totalWordsInTree];
 		FillWordArray("", root, wordArray);
-		System.out.println(wordArray);
-		System.out.println(totalWordsInTree);
+		//System.out.println(wordArray);
+		//System.out.println(totalWordsInTree);
 		return wordArray;
 	}
 
@@ -59,9 +60,11 @@ public class PrefixTree<T> {
 
 	/*Method to traverse(DFS) the tree and fill an array with fully composed words/frequency data*/
 	private void FillWordArray(String currentWord,CharacterNode<T> currentNode, StringNode[] wordArray){
-		currentWord = currentWord + (char)currentNode.characterValue;
-		for(int charValue : currentNode.children.keySet()){
-			FillWordArray(currentWord, currentNode.children.get(charValue), wordArray);
+		currentWord = currentWord + currentNode.nodeValue.charValue();
+		//for(int charValue : currentNode.children.keySet()){
+		for(Character child : currentNode.children.keySet()){
+			System.out.println(currentWord);
+			FillWordArray(currentWord, currentNode.children.get(child), wordArray);
 		}
 		if(currentNode.count != 0){
 			StringNode newNode = new StringNode();
@@ -69,7 +72,7 @@ public class PrefixTree<T> {
 			newNode.count = currentNode.count;
 			wordArray[currentIndex] = newNode;
 			currentIndex++;
-			System.out.println(currentIndex);
+			//System.out.println(currentIndex);
 		}
 		return;
 	}

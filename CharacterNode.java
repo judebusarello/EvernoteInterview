@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class CharacterNode<T> {
-	public int characterValue;
+	public Character nodeValue;
 	public int count;
 	public CharacterNode<T> parent;
-	public HashMap<Integer,CharacterNode<T>> children;
+	public HashMap<Character, CharacterNode<T>> children;
 }
 
